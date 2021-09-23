@@ -28,20 +28,19 @@ else
     true
 endif;
 
-
-
-
 % Each row must be equal to the row clues
 %constraint forall(i in row) (
-%                              sum(j in column)(answer[i,j] == 1) == %row_clues[i]);
-
+%                             sum(j in column)(answer[i,j] == 1) = row_clues[i]);
+                             
 % Each column must be equal to the column clues                              
 %constraint forall(j in column) (
-%                              sum(i in row)(answer[i,j] == 1) == %column_clues[j]);
+%                              sum(i in row)(answer[i,j] == 1) = column_clues[j]);
                           
 constraint forall(i in row, j in column where i < S /\ j < S) ( 
                               adjacentToNeighbor(i, j));
-                                                                    
+                                                        
+constraint forall(
+                        
 constraint forall(i in row, j in column) (
   if horizontal[i,j] == 1 
   then answer[i,j] = 1 
@@ -53,4 +52,7 @@ constraint forall(i in row, j in column) (
 
 
 
-output[show(answer[i,j]) ++ if j == S then "\n" else "" endif  | i in row, j in column]
+%output[if fix(horizontal[i,j]) == 1 then "\(i) \(j) \n" else "" endif  | i in row, j in column] ++ 
+%[if fix(vertical[i,j]) == 1 then "\(i) \(j) \n" else "" endif  | i in row, j in column];
+
+output[show(answer[i,j]) ++ if j = S then "\n" else " " endif | i in row, j in column];
